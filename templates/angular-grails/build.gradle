@@ -1,3 +1,6 @@
+name ${angularModule}
+group ${angularModule}
+
 buildscript {
 	repositories {
 		mavenLocal()
@@ -23,9 +26,6 @@ project.ext {
 plugins {
 	id "io.spring.dependency-management" version "0.4.0.RELEASE"
 }
-
-//version "0.1"
-//group "myapp"
 
 apply plugin: "spring-boot"
 apply plugin: "war"

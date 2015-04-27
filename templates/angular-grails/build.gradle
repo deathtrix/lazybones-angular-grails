@@ -1,11 +1,14 @@
-import org.grails.gradle.plugin.tasks.GrailsTask
-
 buildscript {
 	repositories {
+		mavenLocal()
 		jcenter()
+		maven { url "https://repo.grails.org/grails/core" }
 	}
 	dependencies {
-		classpath 'org.grails:grails-gradle-plugin:2.1.0'
+		classpath "org.grails:grails-gradle-plugin:$grailsVersion"
+		classpath 'com.bertramlabs.plugins:asset-pipeline-gradle:2.1.1'
+		classpath "com.craigburke.angular:angular-template-asset-pipeline:2.0.7"
+		classpath "com.craigburke.angular:angular-annotate-asset-pipeline:2.1.0"
 		classpath 'com.moowork.gradle:gradle-node-plugin:0.6'
 	}
 }
@@ -17,27 +20,27 @@ project.ext {
 	karmaConfig = 'test/js/karma.conf.js'
 }
 
+plugins {
+	id "io.spring.dependency-management" version "0.4.0.RELEASE"
+}
+
+//version "0.1"
+//group "myapp"
+
+apply plugin: "spring-boot"
+apply plugin: "war"
+apply plugin: "asset-pipeline"
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: "org.grails.grails-web"
+apply plugin: "org.grails.grails-gsp"
 apply plugin: 'grails'
 apply plugin: 'com.moowork.node'
 
-apply plugin: 'idea'
-apply plugin: 'eclipse'
-
-repositories {
-	grails.central()
-    flatDir {
-        dirs 'lib'
-    }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.1'
-}
-
-grails {
-	grailsVersion = '2.4.4'
-	groovyVersion = '2.3.7'
-}
+//grails {
+//    grailsVersion = '3.0.1'
+//    groovyVersion = '2.4.3'
+//}
 
 node {
 	version = '0.11.13'
@@ -56,18 +59,95 @@ war {
 	env = 'production'
 }
 
+ext {
+	grailsVersion = project.grailsVersion
+	gradleWrapperVersion = project.gradleWrapperVersion
+}
+
+assets {
+	minifyJs = true
+	minifyCss = true
+}
+
+repositories {
+	mavenLocal()
+	maven { url "https://repo.grails.org/grails/core" }
+	grails.central()
+	flatDir {
+		dirs 'lib'
+	}
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.grails:grails-bom:$grailsVersion"
+	}
+	applyMavenExclusions false
+}
+
+dependencies {
+	springloaded 'org.springframework:springloaded:1.2.1.RELEASE@jar'
+
+	compile "org.springframework.boot:spring-boot-starter-logging"
+	compile "org.springframework.boot:spring-boot-starter-actuator"
+	compile "org.springframework.boot:spring-boot-autoconfigure"
+	compile "org.springframework.boot:spring-boot-starter-tomcat"
+	compile "org.grails:grails-dependencies"
+	compile "org.grails:grails-web-boot"
+
+	compile "org.grails.plugins:hibernate"
+	compile "org.grails.plugins:cache"
+	compile "org.hibernate:hibernate-ehcache"
+
+	//runtime('org.grails.plugins:hibernate4:4.3.6.1') {
+	//        exclude module: 'xml-apis'
+	//}
+
+	compile "com.craigburke.angular:angular-template-asset-pipeline:2.0.7"
+	compile "com.craigburke.angular:angular-annotate-asset-pipeline:2.1.0"
+
+	compile "org.grails.plugins:cache"
+
+	bootstrap "org.grails.plugins:tomcat:7.0.55"
+
+	runtime "org.grails.plugins:asset-pipeline"
+	runtime "org.grails.plugins:scaffolding"
+
+	testCompile "org.grails:grails-plugin-testing"
+	testCompile "org.grails.plugins:geb"
+
+	// Note: It is recommended to update to a more robust driver (Chrome, Firefox etc.)
+	testRuntime 'org.seleniumhq.selenium:selenium-htmlunit-driver:2.44.0'
+
+	test "org.grails.plugins:geb:0.9.2"
+
+	test "org.grails:grails-datastore-test-support:1.0.2-grails-2.4"
+	test "org.seleniumhq.selenium:selenium-support:2.43.1"
+	test "org.gebish:geb-spock:$gebVersion"
+
+	test("com.github.detro.ghostdriver:phantomjsdriver:1.1.0") {
+		transitive = false
+	}
+
+	console "org.grails:grails-console"
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = gradleWrapperVersion
+}
+
 task debug(type: GrailsTask) {
-        command = 'run-app'
-        jvmOptions {
-                jvmArgs '-Xdebug', '-Xrunjdwp:transport=dt_socket,server=y,address=5005'
-        }
+	command = 'run-app'
+	jvmOptions {
+		jvmArgs '-Xdebug', '-Xrunjdwp:transport=dt_socket,server=y,address=5005'
+	}
 }
 
 tasks.withType(GrailsTask) {
 	jvmOptions {
 		minHeapSize = '1g'
 		maxHeapSize = '1g'
-		jvmArgs "-XX:MaxPermSize=512m" 
+		jvmArgs "-XX:MaxPermSize=512m"
 	}
 }
 
@@ -87,43 +167,8 @@ task jasmineRun(type: NodeTask, dependsOn: ['setupPhantomJS', 'setupJasmine']) {
 }
 
 task jasmineWatch(type: NodeTask, dependsOn: 'setupJasmine') {
-        script = karmaExec
-        args = ['start', karmaConfig]
+	script = karmaExec
+	args = ['start', karmaConfig]
 }
 
 test.dependsOn jasmineRun
-
-dependencies {
-	springloaded 'org.springframework:springloaded:1.2.1.RELEASE@jar'
-	
-  	String gebVersion = '0.9.2'
-	String seleniumVersion = '2.43.1'
-
-	test "org.grails:grails-datastore-test-support:1.0.2-grails-2.4"
-	test "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
-	test "org.gebish:geb-spock:$gebVersion"
-	
-    test("com.github.detro.ghostdriver:phantomjsdriver:1.1.0") {
-		transitive = false
-	}
-
-	def plugins = [
-		[name: 'tomcat', version: '7.0.55', scope: 'bootstrap'],
-		[name: 'scaffolding', version: '2.1.2'],
-		[name: 'cache', version: '1.1.8'],
-		[name: 'asset-pipeline', version: '1.9.9'],
-		[name: 'angular-template-asset-pipeline', version: '1.4.1'],
-		[name: 'angular-annotate-asset-pipeline', version: '1.1.2'],
-		[name: 'geb', version: gebVersion, scope: 'test']
-	]
-
-	plugins.each { plugin ->
-		String scope = plugin.scope ?: 'compile'
-		owner."$scope" "org.grails.plugins:${plugin.name}:${plugin.version}"
-	}
-	
-	runtime('org.grails.plugins:hibernate4:4.3.6.1') {
-    		exclude module: 'xml-apis'
-	}
-	
-}

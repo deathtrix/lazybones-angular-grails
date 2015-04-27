@@ -2,7 +2,7 @@ package ${group}
 
 import grails.rest.RestfulController
 import grails.gorm.PagedResultList
-import org.codehaus.groovy.grails.commons.GrailsClassUtils
+import grails.util.GrailsClassUtils
 
 class PagedRestfulController<T> extends RestfulController<T> {
 

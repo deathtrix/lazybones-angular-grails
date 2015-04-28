@@ -13,11 +13,11 @@ project.ext {
 	testApp = [
 		templateVersion: '1.1.4',
 		dir: 'test/app',
-		name: 'angular-grails',
+		name: 'exampleApp',
 		group: 'com.craigburke.angular',
 		version: '1.0',
 		angularModule: 'exampleApp',
-		warName: 'angular-grails.war'
+		warName: 'exampleApp.war'
 	]
 	
 }

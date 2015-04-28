@@ -297,3 +297,10 @@ This directive displays breadcrumb navigation for the different pages. The value
 
 The breadcrumbs templates are located at:
 `/grails-app/assets/vendor/grails/templates/directives/crud-breadcrumbs.tpl.html`
+
+==== TODO
+
+* templates/angular-grails/lazybones.groovy
+** application.yml - defaultpackage - appName - processTemplates
+** fix for apps with - separated names
+* test (and fix if it's the case) tests (including karma tests)

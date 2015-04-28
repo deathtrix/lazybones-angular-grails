@@ -14,8 +14,6 @@ params.version = ask("Define value for your application 'version' [0.1]: ", "0.1
 params.warName = ask("Define the name for your war file [ROOT.war]: ", "ROOT.war", "warName")
 
 processTemplates 'gradle.properties', params
-processTemplates 'application.properties', params
-processTemplates 'grails-app/conf/Config.groovy', params
 processTemplates "${installDirName}/app/**/*", params
 
 def processFile = { File baseDirectory, File file ->

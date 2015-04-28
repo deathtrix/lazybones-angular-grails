@@ -66,7 +66,7 @@ def generateCustomMarshaller = {
 			map['id'] = it?.id
 			${props.domainProperties.collect { "map['" + it.name + "'] = it?." + it.name }.join('\n\t\t\t')}
 	    	map['toText'] = it?.toString()
-			return map 
+			return map
 		}"""
 
     // Remove existing marshallers
@@ -134,7 +134,15 @@ def cleanup = {
     FileUtils.deleteQuietly(new File(templateDir, "angular"))
 }
 
+//def addApplicationInit = {
+//    File sourceDir = new File(projectDir, "grails-app/init/${props.moduleName}/")
+//    File source = new File(templateDir, "Application.groovy")
+//    File destination = new File(projectDir, "grails-app/init/${props.moduleName}/")
+//    FileUtils.moveFileToDirectory(source, final File destDir, final boolean createDestDir)
+//}
+
 copyAngularTemplates()
+//addApplicationInit()
 
 if (isCrudModule) {
     generateCustomMarshaller()

@@ -6,13 +6,13 @@ def params = [:]
 String installDirName = "install"
 File installDir = new File(templateDir, installDirName)
 
-params.appName = ask("Define the name for your project [exampleApp]: ", "exampleApp", "appName")
+params.appName = ask("Define the name for your project [${projectDir.name}]: ", projectDir.name, "appName")
 params.angularVersion = ask("Defined the version of AngularJS you want in your project [1.3]: ", "1.3", "angularVersion")
 params.grailsVersion = ask("Defined the version of Grails you want in your project [3.0.1]: ", "3.0.1", "grailsVersion")
 params.angularModule = ask("Define value for your main AngularJS module [myApp]: ", "myApp", "angularModule")
-params.group = ask("Define the value for your application group [com.company]: ", "com.company", "group")
+params.group = ask("Define the value for your application group [${params.appName}]: ", params.appName, "group")
 params.version = ask("Define value for your application 'version' [0.1]: ", "0.1", "version")
-params.warName = ask("Define the name for your war file [ROOT.war]: ", "ROOT.war", "warName")
+params.warName = ask("Define the name for your war file [${params.appName}.war]: ", "${params.appName}.war", "warName")
 
 processTemplates 'gradle.properties', params
 processTemplates "${installDirName}/app/**/*", params

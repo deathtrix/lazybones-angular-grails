@@ -57,7 +57,7 @@ def copyAngularTemplates = {
 }
 
 def generateCustomMarshaller = {
-    def customMarshallerRegistrar = new File(projectDir, "src/groovy/${props.groupPath}/CustomMarshallerRegistrar.groovy")
+    def customMarshallerRegistrar = new File(projectDir, "src/main/groovy/${props.groupPath}/CustomMarshallerRegistrar.groovy")
 
     String jsonMarshaller =
             """
@@ -80,7 +80,7 @@ def generateCustomMarshaller = {
 }
 
 def setUrlMappings = {
-    def mappingFile = new File("${projectDir}/grails-app/conf/UrlMappings.groovy")
+    def mappingFile = new File("${projectDir}/grails-app/controllers/UrlMappings.groovy")
 
     String mapping = "\t\t'/${props.moduleName}'(view: '${props.moduleName}')\n"
     if (isCrudModule) {
@@ -149,7 +149,7 @@ cleanup()
 def getDomainProperties(String className, String group) {
 	def classLoader = new GroovyClassLoader()
 
-	['grails-app/domain', 'grails-app/services', 'src/groovy', 'src/java'].each {
+	['grails-app/domain', 'grails-app/services', 'src/main/groovy'].each {
 		classLoader.addClasspath(it)
 	}
 

@@ -27,6 +27,13 @@ project.ext {
 	karmaConfig = 'src/integration-test/js/karma.conf.js'
 }
 
+version = project.version
+group = project.group
+ext {
+	grailsVersion = project.grailsVersion
+	gradleWrapperVersion = project.gradleWrapperVersion
+}
+
 apply plugin: 'spring-boot'
 apply plugin: 'war'
 apply plugin: 'asset-pipeline'

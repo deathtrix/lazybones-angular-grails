@@ -1,10 +1,10 @@
 module.exports = function(config) {
 
   var ASSET_PATH = 'grails-app/assets';
-  var TEST_PATH = 'test/js'
+  var TEST_PATH = 'src/integration-test/js'
 
   config.set({
-    basePath: '../../',
+    basePath: '../../../',
     frameworks: ['jasmine'],
 
     files: [

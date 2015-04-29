@@ -103,10 +103,6 @@ dependencies {
 
 	testCompile "com.github.detro.ghostdriver:phantomjsdriver:1.1.0"
 
-	//test("com.github.detro.ghostdriver:phantomjsdriver:1.1.0") {
-	//	transitive = false
-	//} 
-
 	console "org.grails:grails-console"
 }
 
@@ -134,12 +130,17 @@ task setupKarma(type: NpmTask) {
 	args = ['install', 'karma', '--loglevel', 'error']
 }
 
+task setupKarmaCli(type: NpmTask, dependsOn: ['setupKarma']) {
+	outputs.dir file('node_modules')
+	args = ['install', 'karma-cli', '--loglevel', 'error']
+}
+
 task setupJasmine(type: NpmTask) {
 	outputs.dir file('node_modules')
 	args = ['install'] + jasmineDependencies + ['--loglevel', 'error']
 }
 
-task jasmineRun(type: NodeTask, dependsOn: ['setupPhantomJS', 'setupKarma', 'setupJasmine']) {
+task jasmineRun(type: NodeTask, dependsOn: ['setupPhantomJS', 'setupKarma', 'setupKarmaCli', 'setupJasmine']) {
 	script = karmaExec
 	args = ['start', karmaConfig, '--single-run']
 }
@@ -149,4 +150,4 @@ task jasmineWatch(type: NodeTask, dependsOn: 'setupJasmine') {
 	args = ['start', karmaConfig]
 }
 
-//test.dependsOn jasmineRun
+test.dependsOn jasmineRun

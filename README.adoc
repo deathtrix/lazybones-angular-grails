@@ -2,7 +2,7 @@
 
 image::https://codeship.com/projects/36ff7340-ceec-0132-75cf-3e6c736f2e4c/status?branch=master[link="https://codeship.com/projects/76533"]
 
-== [blue]#This is a port of https://github.com/craigburke/lazybones-angular-grails[lazybones-angular-grails] for Grails 3.0#
+== This is a port of https://github.com/craigburke/lazybones-angular-grails[lazybones-angular-grails] for Grails 3.0
 
 == Getting started
 

@@ -12,8 +12,10 @@
                 </div>
                 <div class="panel-body">
                     <ul>
-                        <li>App version: <g:meta name="app.version"/></li>
-                        <li>Grails version: <g:meta name="app.grails.version"/></li>
+                        <li>Environment: ${grails.util.Environment.current.name}</li>
+                        <li>App profile: ${grailsApplication.config.grails?.profile}</li>
+                        <li>App version: <g:meta name="info.app.version"/></li>
+                        <li>Grails version: <g:meta name="info.app.grailsVersion"/></li>
                         <li>Groovy version: ${GroovySystem.getVersion()}</li>
                         <li>JVM version: ${System.getProperty('java.version')}</li>
                         <li>Reloading active: ${grails.util.Environment.reloadingAgentEnabled}</li>

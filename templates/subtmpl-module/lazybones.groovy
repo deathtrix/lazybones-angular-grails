@@ -82,7 +82,7 @@ def generateCustomMarshaller = {
 def setUrlMappings = {
     def mappingFile = new File("${projectDir}/grails-app/controllers/UrlMappings.groovy")
 
-    String mapping = "\t\t'/${props.moduleName}'(view: '${props.moduleName}')\n"
+    String mapping = "\t\t'/${props.moduleName}'(view: '/${props.moduleName}')\n"
     if (isCrudModule) {
         // Add resource mapping
         mapping += "\t\t'/api/${props.moduleName}'(resources: '${props.moduleName}')\n"

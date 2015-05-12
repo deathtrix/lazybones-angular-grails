@@ -35,7 +35,7 @@ props.fullModuleName = "${parentParams.angularModule}.${props.moduleName}"
 props.modulePath = props.getModulePath(props.fullModuleName)
 
 if (isCrudModule) {
-    props.domainClassName = props.group + '.' + ask("Define the name of the domain class [Foo]: ", "Foo", "domainClass")
+    props.domainClassName = props.group + '.' + ask("Define the name of the domain class [${props.moduleName.capitalize()}]: ", "${props.moduleName.capitalize()}", "domainClass")
     props.domainProperties = getDomainProperties(props.domainClassName, props.group)
     props.defaultResource = "${props.resourceName}Resource"
     props.resourceUrl = "/api/${props.moduleName}"
